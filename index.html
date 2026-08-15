@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Valtis propose une cybersécurité managée et une surveillance continue (SOC) adaptées aux PME. Protégez votre réseau sans frais de licence exorbitants."/>
+  <title>Valtis — Cybersécurité managée pour PME</title>
+  
+  <meta property="og:title" content="Valtis — Cybersécurité managée pour PME"/>
+  <meta property="og:description" content="Surveillance continue 24h/24, zéro frais de licence, déployé en moins de 2 semaines. Valtis protège votre réseau à votre place."/>
+  <meta property="og:image" content="https://valtis.tech/og-image.png"/>
+  <meta property="og:url" content="https://valtis.tech"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="canonical" href="https://valtis.tech/"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8f9fb; --bg2: #ffffff; --dark: #111827; --dark2: #1a2535;
+      --cyan: #00ACC3; --cyan2: #00d4f0; --grey: #6b7280; --border: #e5e7eb;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg2); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+
+    /* ─── NAV ─── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 clamp(16px,4vw,60px); height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; overflow: visible; }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .nav-logo img { height: 70px; transition: opacity 0.2s; }
+    .nav-logo img:hover { opacity: 0.8; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--grey); text-decoration: none; transition: color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px; background: var(--cyan); transform: scaleX(0); transition: transform 0.2s; }
+    .nav-links a:hover { color: var(--dark); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta { background: var(--dark); color: white !important; padding: 9px 22px; border-radius: 5px; font-weight: 600 !important; transition: all 0.2s !important; }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--dark2) !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    /* ─── REVEAL ANIMATIONS ─── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── HERO ─── */
+    #accueil { min-height: 100vh; display: flex; align-items: center; padding: clamp(88px,10vw,110px) clamp(20px,4vw,60px) clamp(56px,8vw,80px); background: var(--dark); position: relative; overflow: hidden; }
+    #particles-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .hero-line { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--cyan), transparent); z-index: 1; }
+    .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; position: relative; z-index: 2; width: 100%; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,172,195,0.1); border: 1px solid rgba(0,172,195,0.25); border-radius: 4px; padding: 6px 14px; margin-bottom: 24px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--cyan); text-transform: uppercase; opacity:0; animation: fadeInDown 0.5s 0.05s ease forwards; }
+    .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; display: inline-block; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+    @keyframes fadeInDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    h1 { font-size: clamp(1.6rem, 5vw, 2.9rem); font-weight: 900; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 18px; color: white; opacity:0; animation: fadeInUp 0.5s 0.08s ease forwards; }
+    h1 em { font-style: normal; color: var(--cyan); }
+    .hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.55); max-width: 100%; margin-bottom: 14px; line-height: 1.8; opacity:0; animation: fadeInUp 0.5s 0.15s ease forwards; }
+    .hero-stat { font-size: 0.82rem; color: rgba(255,255,255,0.35); margin-bottom: 28px; font-style: italic; opacity:0; animation: fadeInUp 0.5s 0.22s ease forwards; }
+    .hero-stat strong { color: rgba(255,255,255,0.6); font-style: normal; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; opacity:0; animation: fadeInUp 0.5s 0.28s ease forwards; }
+    .btn-p { background: var(--cyan); color: var(--dark); padding: 13px 26px; border-radius: 5px; font-weight: 700; font-size: 0.88rem; text-decoration: none; transition: all 0.22s; display: inline-block; position: relative; overflow: hidden; }
+    .btn-p::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.15); transform: translateX(-100%); transition: transform 0.3s; }
+    .btn-p:hover::before { transform: translateX(0); }
+    .btn-p:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,172,195,0.4); }
+    .btn-g { border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 13px 26px; border-radius: 5px; font-weight: 500; font-size: 0.88rem; text-decoration: none; transition: all 0.2s; display: inline-block; }
+    .btn-g:hover { border-color: rgba(255,255,255,0.3); color: white; transform: translateY(-1px); }
+
+    /* ─── HERO FORM ─── */
+    .hero-form-wrap { opacity:0; animation: fadeIn 0.6s 0.3s ease forwards; }
+    .hf-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; background: rgba(0,172,195,0.1); border: 1px solid rgba(0,172,195,0.2); border-radius: 20px; padding: 6px 14px; font-size: 0.72rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.06em; }
+    .hf-badge svg { width: 12px; height: 12px; fill: var(--cyan); }
+    .hero-form { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 28px 24px; backdrop-filter: blur(4px); }
+    .hf-title { font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 18px; }
+    .hf-fields { display: flex; flex-direction: column; gap: 11px; }
+    .hf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .hf-g { display: flex; flex-direction: column; gap: 4px; }
+    .hf-g label { font-size: 0.65rem; font-weight: 600; color: rgba(255,255,255,0.65); letter-spacing: 0.07em; text-transform: uppercase; }
+    .hf-g input, .hf-g select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 6px; padding: 9px 12px; font-size: 0.83rem; font-family: inherit; color: white; outline: none; transition: all 0.2s; }
+    .hf-g input::placeholder { color: rgba(255,255,255,0.18); }
+    .hf-g input:focus, .hf-g select:focus { border-color: var(--cyan); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(0,172,195,0.1); }
+    .hf-g select option { background: #1a2535; }
+    .hf-g textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 6px; padding: 9px 12px; font-size: 0.83rem; font-family: inherit; color: white; outline: none; transition: all 0.2s; min-height: 70px; resize: vertical; }
+    .hf-g textarea::placeholder { color: rgba(255,255,255,0.18); }
+    .hf-g textarea:focus { border-color: var(--cyan); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(0,172,195,0.1); }
+    .hf-submit { background: var(--cyan); color: var(--dark); border: none; padding: 11px 22px; border-radius: 6px; font-size: 0.86rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.22s; width: 100%; margin-top: 4px; position: relative; overflow: hidden; }
+    .hf-submit::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.15); transform: translateX(-100%); transition: transform 0.3s; }
+    .hf-submit:hover::before { transform: translateX(0); }
+    .hf-submit:hover { background: var(--cyan2); transform: translateY(-1px); box-shadow: 0 5px 18px rgba(0,172,195,0.35); }
+    .hf-note { font-size: 0.66rem; color: rgba(255,255,255,0.22); margin-top: 8px; text-align: center; }
+
+    /* ─── SECTIONS COMMUNES ─── */
+    section { padding: 100px 60px; }
+    .si { max-width: 1080px; margin: 0 auto; }
+    .slabel { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; display: block; }
+    .stitle { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 18px; color: var(--dark); }
+    .ssub { font-size: 1rem; color: var(--grey); max-width: 580px; line-height: 1.8; }
+
+    /* ─── CHIFFRES CHOC ─── */
+    #choc { background: var(--bg); padding: 80px 60px; border-bottom: 1px solid var(--border); }
+    .choc-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+    .choc-item { text-align: center; padding: 36px 24px; background: white; border-radius: 12px; border: 1px solid var(--border); transition: all 0.3s; }
+    .choc-item:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); border-color: var(--cyan); }
+    .choc-num { font-size: 3rem; font-weight: 900; color: var(--dark); line-height: 1; margin-bottom: 8px; letter-spacing: -0.04em; }
+    .choc-num .suffix { color: var(--cyan); }
+    .choc-label { font-size: 0.88rem; color: var(--grey); line-height: 1.6; }
+
+    /* ─── PREUVE SOCIALE ─── */
+    #preuve { background: var(--dark); padding: 80px 60px; }
+    .preuve-inner { max-width: 1080px; margin: 0 auto; }
+    .preuve-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; display: block; }
+    .preuve-title { font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 800; color: white; margin-bottom: 10px; letter-spacing: -0.02em; }
+    .preuve-sub { font-size: 0.92rem; color: rgba(255,255,255,0.45); margin-bottom: 48px; max-width: 540px; line-height: 1.8; }
+    .preuve-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .preuve-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 24px 20px; transition: all 0.3s; }
+    .preuve-card:hover { background: rgba(255,255,255,0.09); border-color: rgba(0,172,195,0.3); transform: translateY(-4px); }
+    .preuve-num { font-size: 2.2rem; font-weight: 900; color: var(--cyan); line-height: 1; margin-bottom: 6px; letter-spacing: -0.04em; }
+    .preuve-desc { font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.55; }
+    .preuve-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(0,172,195,0.08); border: 1px solid rgba(0,172,195,0.18); border-radius: 8px; padding: 12px 18px; font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+    .preuve-badge strong { color: var(--cyan); }
+
+    /* ─── PROBLÈME ─── */
+    #probleme { background: var(--bg2); scroll-margin-top: 80px;}
+    .prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; margin-top: 60px; align-items: start; }
+    .prob-text p { font-size: 0.95rem; color: var(--grey); line-height: 1.9; margin-bottom: 20px; }
+    .prob-text p strong { color: var(--dark); }
+    .prob-quote { margin-top: 32px; padding: 28px 32px; border-left: 4px solid var(--cyan); background: var(--bg); border-radius: 0 10px 10px 0; font-size: 1.05rem; font-weight: 700; color: var(--dark); line-height: 1.5; font-style: italic; }
+    .prob-quote cite { display: block; margin-top: 12px; font-size: 0.75rem; font-weight: 600; color: var(--grey); font-style: normal; letter-spacing: 0.04em; text-transform: uppercase; }
+    .etym { padding: 20px 22px; border-left: 3px solid var(--cyan); background: var(--bg); border-radius: 0 8px 8px 0; }
+    .etym-tag { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 7px; display: block; }
+    .etym p { font-size: 0.85rem; color: var(--grey); line-height: 1.7; margin: 0; }
+    .etym em { color: var(--cyan); }
+    .prob-right { display: flex; flex-direction: column; gap: 14px; }
+    .prob-card { padding: 24px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); transition: all 0.3s; }
+    .prob-card:hover { border-color: var(--cyan); background: white; transform: translateX(6px); box-shadow: 0 4px 20px rgba(0,172,195,0.08); }
+    .prob-card-icon { font-size: 1.4rem; margin-bottom: 10px; display: block; transition: transform 0.3s; }
+    .prob-card:hover .prob-card-icon { transform: scale(1.15); }
+    .prob-card h4 { font-size: 0.9rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .prob-card p { font-size: 0.82rem; color: var(--grey); line-height: 1.65; margin: 0; }
+
+    /* ─── SOLUTION ─── */
+    #solution { background: var(--dark); scroll-margin-top: 80px;}
+    #solution .stitle { color: white; }
+    #solution .ssub { color: rgba(255,255,255,0.5); }
+    .sol-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 60px; }
+    .sol-card { padding: 36px 28px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; transition: all 0.3s; }
+    .sol-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(0,172,195,0.3); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+    .sol-step { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; color: var(--cyan); text-transform: uppercase; margin-bottom: 22px; display: block; }
+    .sol-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; transition: transform 0.3s; }
+    .sol-card:hover .sol-icon { transform: scale(1.15) rotate(-5deg); }
+    .sol-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; color: white; }
+    .sol-card p { font-size: 0.84rem; color: rgba(255,255,255,0.45); line-height: 1.75; margin-bottom: 16px; }
+    .sol-detail { font-size: 0.78rem; color: var(--cyan); font-weight: 600; }
+
+    /* ─── MODULES ─── */
+    #modules { background: var(--bg); scroll-margin-top: 80px;}
+    .mg { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 60px; }
+    .mc { padding: 22px 18px; border: 1px solid var(--border); border-radius: 8px; background: white; transition: all 0.3s; position: relative; overflow: hidden; }
+    .mc::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,172,195,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+    .mc:hover { border-color: var(--cyan); box-shadow: 0 8px 24px rgba(0,172,195,0.1); transform: translateY(-4px); }
+    .mc:hover::after { opacity: 1; }
+    .mi { font-size: 1.4rem; margin-bottom: 10px; display: block; transition: transform 0.3s; position: relative; z-index: 1; }
+    .mc:hover .mi { transform: scale(1.2); }
+    .mc h4 { font-size: 0.85rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; position: relative; z-index: 1; }
+    .mc p { font-size: 0.77rem; color: var(--grey); line-height: 1.5; position: relative; z-index: 1; }
+    .mtag { display: inline-block; margin-top: 10px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(0,172,195,0.25); border-radius: 3px; padding: 2px 7px; position: relative; z-index: 1; }
+
+    /* ─── POURQUOI VALTIS ─── */
+    #reassurance { background: var(--bg2); scroll-margin-top: 80px;}
+    .rg { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; margin-top: 60px; }
+    .rc { padding: 34px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); transition: all 0.3s; }
+    .rc:hover { border-color: var(--cyan); background: white; transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,172,195,0.08); }
+    .rn { font-size: 2.4rem; font-weight: 900; color: rgba(0,172,195,0.12); line-height: 1; margin-bottom: 14px; letter-spacing: -0.04em; transition: color 0.3s; }
+    .rc:hover .rn { color: rgba(0,172,195,0.22); }
+    .rc h4 { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 9px; }
+    .rc p { font-size: 0.84rem; color: var(--grey); line-height: 1.8; }
+
+    /* ─── FOOTER ─── */
+    footer { background: #0d1420; border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 60px; }
+    .fi { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    footer img { height: 30px; opacity: 0.55; transition: opacity 0.2s; }
+    footer img:hover { opacity: 0.85; }
+    .fl { display: flex; gap: 28px; list-style: none; }
+    .fl a { font-size: 0.76rem; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+    .fl a:hover { color: var(--cyan); }
+    .fc { font-size: 0.73rem; color: rgba(255,255,255,0.18); }
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:860px){
+      nav{padding:0 16px;} .nav-links{display:none;}
+      .burger{display:flex !important;}
+      section{padding:64px 20px;} #accueil{padding:88px 20px 56px;}
+      #choc{padding:48px 20px;} .choc-inner{grid-template-columns:1fr;gap:16px;}
+      .hero-inner{grid-template-columns:1fr;}
+      .hero-form-wrap{width:100%;max-width:100%;}
+      .hero-form{padding:20px 16px;}
+      .hf-row{grid-template-columns:1fr !important;}
+      .prob-grid,.cl{grid-template-columns:1fr;gap:40px;}
+      .sol-grid{grid-template-columns:1fr;}
+      .mg{grid-template-columns:repeat(2,1fr);} .rg{grid-template-columns:1fr;}
+      .preuve-grid{grid-template-columns:repeat(2,1fr);}
+      footer{padding:28px 20px;} .fi{flex-direction:column;align-items:flex-start;}
+      #preuve{padding:60px 20px;}
+    }
+    .burger{display:none;flex-direction:column;gap:5px;background:none;border:1px solid var(--border);border-radius:6px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+    .burger span{width:18px;height:2px;background:var(--dark);display:block;}
+    .mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;z-index:99;background:#fff;border-bottom:1px solid var(--border);padding:16px 20px;flex-direction:column;gap:4px;box-shadow:0 12px 24px rgba(0,0,0,0.08);}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{padding:12px 4px;font-size:0.95rem;font-weight:600;color:var(--dark);text-decoration:none;border-bottom:1px solid var(--border);}
+    .mobile-menu a:last-child{border-bottom:none;background:var(--dark);color:#fff;border-radius:6px;text-align:center;margin-top:8px;padding:12px;}
+
+
+    /* RAPPORT QUOTIDIEN */
+    #rapport { background: var(--bg); padding: 90px 60px; }
+    .rapport-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; margin-top: 56px; align-items: center; }
+    .rapport-text .stitle { color: var(--dark); }
+    .rapport-list { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .rapport-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.9rem; color: var(--grey); line-height: 1.6; }
+    .rapport-list li::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,172,195,0.12); border: 1.5px solid var(--cyan); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+    .rapport-list li span { color: var(--dark); font-weight: 600; }
+    .rapport-mock { background: var(--dark); border-radius: 14px; padding: 0; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
+    .rm-header { background: #0d1420; padding: 14px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .rm-dots { display: flex; gap: 6px; }
+    .rm-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .rm-title { font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.4); margin-left: 8px; letter-spacing: 0.06em; }
+    .rm-body { padding: 20px; }
+    .rm-subject { font-size: 0.78rem; font-weight: 700; color: white; margin-bottom: 4px; }
+    .rm-date { font-size: 0.68rem; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
+    .rm-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+    .rm-stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 12px; text-align: center; }
+    .rm-stat-num { font-size: 1.4rem; font-weight: 900; color: var(--cyan); line-height: 1; }
+    .rm-stat-label { font-size: 0.62rem; color: rgba(255,255,255,0.35); margin-top: 4px; }
+    .rm-alert { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 7px; margin-bottom: 8px; font-size: 0.75rem; }
+    .rm-alert.ok { background: rgba(15,148,104,0.12); border: 1px solid rgba(15,148,104,0.2); color: rgba(255,255,255,0.6); }
+    .rm-alert.warn { background: rgba(0,172,195,0.1); border: 1px solid rgba(0,172,195,0.2); color: rgba(255,255,255,0.6); }
+    .rm-alert-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .rm-footer { font-size: 0.68rem; color: rgba(255,255,255,0.2); padding: 12px 20px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+
+    /* CERTIFICATIONS */
+    #certifs { background: var(--bg2); padding: 72px 60px; border-top: 1px solid var(--border); }
+    .certifs-inner { max-width: 1080px; margin: 0 auto; }
+    .certifs-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 40px; }
+    .certif-card { padding: 22px 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); transition: all 0.3s; display: flex; flex-direction: column; gap: 10px; }
+    .certif-card:hover { border-color: var(--cyan); background: white; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,172,195,0.08); }
+    .certif-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .certif-issuer { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); }
+    .certif-name { font-size: 0.85rem; font-weight: 700; color: var(--dark); line-height: 1.35; }
+    .certif-desc { font-size: 0.75rem; color: var(--grey); line-height: 1.5; }
+
+    /* PRICING */
+    #pricing { background: var(--dark); padding: 90px 60px; }
+    #pricing .stitle { color: white; }
+    #pricing .ssub { color: rgba(255,255,255,0.5); }
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; max-width: 780px; }
+    .pricing-card { padding: 36px 32px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; transition: all 0.3s; }
+    .pricing-card.featured { background: rgba(0,172,195,0.07); border-color: rgba(0,172,195,0.35); position: relative; }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--cyan); color: var(--dark); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+    .pricing-name { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; }
+    .pricing-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px; }
+    .pricing-amount { font-size: 2.4rem; font-weight: 900; color: white; line-height: 1; }
+    .pricing-period { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+    .pricing-install { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .pricing-install strong { color: rgba(255,255,255,0.55); }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .pricing-features li { font-size: 0.83rem; color: rgba(255,255,255,0.55); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    .pricing-features li::before { content: '✓'; color: var(--cyan); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .pricing-cta { display: block; text-align: center; padding: 12px; border-radius: 7px; font-size: 0.86rem; font-weight: 700; text-decoration: none; transition: all 0.22s; }
+    .pricing-card .pricing-cta { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12); }
+    .pricing-card .pricing-cta:hover { background: rgba(255,255,255,0.14); color: white; }
+    .pricing-card.featured .pricing-cta { background: var(--cyan); color: var(--dark); border: none; }
+    .pricing-card.featured .pricing-cta:hover { background: var(--cyan2); transform: translateY(-1px); box-shadow: 0 5px 18px rgba(0,172,195,0.4); }
+    .pricing-note { font-size: 0.73rem; color: rgba(255,255,255,0.25); margin-top: 20px; }
+
+    /* FAQ */
+    #faq { background: var(--bg2); padding: 90px 60px; }
+    .faq-list { margin-top: 48px; max-width: 720px; display: flex; flex-direction: column; gap: 0; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; padding: 22px 0; text-align: left; font-family: inherit; font-size: 0.95rem; font-weight: 700; color: var(--dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color 0.2s; }
+    .faq-q:hover { color: var(--cyan); }
+    .faq-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; transition: all 0.25s; color: var(--grey); line-height: 1; }
+    .faq-item.open .faq-icon { background: var(--cyan); border-color: var(--cyan); color: var(--dark); transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.25s ease; }
+    .faq-a p { font-size: 0.88rem; color: var(--grey); line-height: 1.85; padding-bottom: 22px; }
+    .faq-item.open .faq-a { max-height: 300px; }
+
+    /* CTA intermédiaire */
+    .cta-band { background: var(--cyan); padding: 40px 60px; text-align: center; }
+    .cta-band h3 { font-size: 1.4rem; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+    .cta-band p { font-size: 0.9rem; color: rgba(0,0,0,0.55); margin-bottom: 24px; }
+    .cta-band a { background: var(--dark); color: white; padding: 13px 32px; border-radius: 6px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-block; transition: all 0.2s; }
+    .cta-band a:hover { background: var(--dark2); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+
+    /* Responsive nouvelles sections */
+    @media(max-width:860px){
+      .rapport-grid { grid-template-columns: 1fr; gap: 36px; }
+      .rapport-list li::before { display:block; }
+      .certifs-grid { grid-template-columns: repeat(2,1fr); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 100%; }
+      #rapport, #certifs, #pricing, #faq { padding: 60px 20px; }
+      .cta-band { padding: 36px 20px; }
+      .rm-stat-row { grid-template-columns: repeat(3,1fr); }
+    }
+  </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Valtis",
+  "url": "https://valtis.tech",
+  "logo": "https://valtis.tech/valtis-logo.png",
+  "description": "Cybersécurité managée pour PME — surveillance SIEM Wazuh, détection d'incidents et alertes 24h/24.",
+  "foundingDate": "2026",
+  "founder": {
+    "@type": "Person",
+    "name": "Mevorah Abergel"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "contact@valtis.tech",
+    "telephone": "+33767361471",
+    "contactType": "customer service",
+    "availableLanguage": "French"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "16 rue de la Rochefoucauld",
+    "addressLocality": "Les Lilas",
+    "postalCode": "93260",
+    "addressCountry": "FR"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/valtis-tech"
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#accueil" class="nav-logo"><img src="/valtis-logo.png" alt="Logo Valtis - Cybersécurité managée pour PME"/></a>
+  <button class="burger" id="burger-btn" aria-label="Menu" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#probleme">Le problème</a></li>
+    <li><a href="#solution">Notre réponse</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#reassurance">Pourquoi nous</a></li>
+    <li><a href="#pricing">Tarifs</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="/wazuh/">Notre SIEM</a></li>
+    <li><a href="/mentions-legales/">Mentions légales</a></li>
+    <li><a href="/rdv/" class="nav-cta">Prendre RDV →</a></li>
+  </ul>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#probleme" onclick="closeMobileMenu()">Le problème</a>
+  <a href="#solution" onclick="closeMobileMenu()">Notre réponse</a>
+  <a href="#modules" onclick="closeMobileMenu()">Modules</a>
+  <a href="#reassurance" onclick="closeMobileMenu()">Pourquoi nous</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Tarifs</a>
+  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <a href="/wazuh/" onclick="closeMobileMenu()">Notre SIEM</a>
+  <a href="/rdv/" onclick="closeMobileMenu()">Prendre RDV →</a>
+</div>
+<main>
+<section id="accueil">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-line"></div>
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-badge"><span></span> Cybersécurité managée pour PME</div>
+      <h1>La surveillance cyber des grands groupes, enfin accessible aux <em>PME.</em></h1>
+      <p class="hero-sub"><strong>0€ de frais de licence.</strong> Nous installons, configurons et gérons la sécurité de votre réseau 24h/24. Pas d'abonnements logiciels opaques, juste une expertise dédiée.</p>
+      <p class="hero-stat"><strong>207 jours</strong> — c'est le délai moyen entre une intrusion et sa détection dans une PME. Valtis réduit ce délai à quelques minutes.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-p">Je veux qu'on surveille mon réseau</a>
+        <a href="#probleme" class="btn-g">En savoir plus</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div id="contact" class="hero-form-wrap">
+        <div class="hf-badge">
+          <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="6"/></svg>
+          Réponse sous 24h · Sans engagement
+        </div>
+        <div class="hero-form">
+          <div class="hf-title">Parlez-nous de votre infrastructure</div>
+          <form class="hf-fields" action="#">
+            <div class="hf-row">
+              <div class="hf-g">
+                <label for="hf-nom">Nom &amp; Prénom</label>
+                <input id="hf-nom" type="text" name="nom" placeholder="Jean Dupont" required/>
+              </div>
+              <div class="hf-g">
+                <label for="hf-email">Email professionnel</label>
+                <input id="hf-email" type="email" name="email" placeholder="contact@societe.fr" required/>
+              </div>
+            </div>
+            <div class="hf-row">
+              <div class="hf-g">
+                <label for="hf-tel">Téléphone</label>
+                <input id="hf-tel" type="tel" name="telephone" placeholder="06 00 00 00 00"/>
+              </div>
+              <div class="hf-g">
+                <label for="hf-taille">Taille du parc</label>
+                <select id="hf-taille" name="taille_infra">
+                  <option value="">Sélectionnez</option>
+                  <option>Moins de 25 postes</option>
+                  <option>25 à 50 postes</option>
+                  <option>50 à 100 postes</option>
+                  <option>Plus de 100 postes</option>
+                </select>
+              </div>
+            </div>
+            <div class="hf-g">
+              <label for="hf-message">Message (optionnel)</label>
+              <textarea id="hf-message" name="message" placeholder="Décrivez rapidement votre contexte..."></textarea>
+            </div>
+            <div class="hf-g" style="flex-direction:row;align-items:flex-start;gap:10px;margin-top:4px">
+            <input id="hf-rgpd" type="checkbox" name="rgpd" required style="margin-top:3px;accent-color:var(--cyan);width:15px;height:15px;flex-shrink:0"/>
+            <label for="hf-rgpd" style="font-size:0.7rem;color:rgba(255,255,255,0.55);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer">J'accepte que mes données soient utilisées pour traiter ma demande, conformément à la <a href="/mentions-legales/" style="color:var(--cyan)">politique de confidentialité</a> de Valtis.</label>
+          </div>
+          <!-- Honeypot anti-bot : doit rester vide, caché par CSS -->
+          <input type="text" name="honeypot" tabindex="-1" autocomplete="off" style="display:none !important;position:absolute;left:-9999px;" aria-hidden="true"/>
+          <button type="submit" class="hf-submit">Demander un devis gratuit →</button>
+            <p class="hf-note">Vos données ne servent qu'à vous répondre. Pas de démarchage.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- CHIFFRES CHOC -->
+<div id="choc">
+  <div class="choc-inner">
+    <div class="choc-item reveal">
+      <div class="choc-num"><span class="counter" data-target="50">0</span><span class="suffix">%</span></div>
+      <div class="choc-label">Des PME françaises subissent une cyberattaque chaque année. La plupart ne le savent pas immédiatement.</div>
+    </div>
+    <div class="choc-item reveal reveal-delay-1">
+      <div class="choc-num"><span class="counter" data-target="207">0</span><span class="suffix">j</span></div>
+      <div class="choc-label">C'est le délai moyen entre une intrusion et sa détection. 207 jours pendant lesquels quelqu'un est dans votre réseau.</div>
+    </div>
+    <div class="choc-item reveal reveal-delay-2">
+      <div class="choc-num"><span class="counter" data-target="60">0</span><span class="suffix">%</span></div>
+      <div class="choc-label">Des PME victimes d'une cyberattaque déposent le bilan dans les 18 mois qui suivent.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PREUVE SOCIALE — WT&T -->
+<div id="preuve">
+  <div class="preuve-inner">
+    <span class="preuve-label reveal">Déploiement de référence</span>
+    <h2 class="preuve-title reveal">Des chiffres réels, pas des promesses.</h2>
+    <p class="preuve-sub reveal">Valtis est née d'un déploiement opérationnel réalisé chez WT&amp;T, une PME de 25 agents. Ce que vous voyez ci-dessous, c'est ce que notre stack détecte vraiment — sur une infrastructure comparable à la vôtre.</p>
+    <div class="preuve-grid">
+      <div class="preuve-card reveal">
+        <div class="preuve-num">25</div>
+        <div class="preuve-desc">agents surveillés en temps réel — postes Windows, serveurs, VM Linux</div>
+      </div>
+      <div class="preuve-card reveal reveal-delay-1">
+        <div class="preuve-num">8</div>
+        <div class="preuve-desc">modules actifs — réseau, malwares, conformité, honeypot, IA, FIM…</div>
+      </div>
+      <div class="preuve-card reveal reveal-delay-2">
+        <div class="preuve-num">756K</div>
+        <div class="preuve-desc">alertes indexées en 24h — dont 751K taguées PCI-DSS, 756K RGPD</div>
+      </div>
+      <div class="preuve-card reveal reveal-delay-3">
+        <div class="preuve-num">11j</div>
+        <div class="preuve-desc">pour déployer l'intégralité de la solution — clé en main, sans interruption</div>
+      </div>
+    </div>
+    <div class="preuve-badge reveal">
+      <span>🔒</span>
+      <span>Déployé chez <strong>WT&amp;T</strong> · Analyse Comportementale · Antivirus · Détection réseau · Conformité RGPD & PCI-DSS</span>    </div>
+  </div>
+</div>
+
+<!-- LE PROBLÈME -->
+<section id="probleme">
+  <div class="si">
+    <span class="slabel reveal">Le problème</span>
+    <h2 class="stitle reveal">Votre équipe IT est compétente.<br>Mais elle ne peut pas tout voir.</h2>
+    <p class="ssub reveal">Ce n'est pas une question de compétence. C'est une question de temps et d'outils.</p>
+    <div class="prob-grid">
+      <div class="prob-text reveal">
+        <p>Votre administrateur système gère votre infra au quotidien — serveurs, postes, mises à jour, helpdesk. Il fait bien son travail. Mais <strong>surveiller en permanence ce qui se passe sur votre réseau, croiser des milliers d'événements par jour, détecter un comportement anormal à 3h du matin</strong> — ce n'est pas son job. Et il n'a pas les outils pour ça.</p>
+        <p>Résultat : si quelqu'un entre dans votre réseau aujourd'hui, vous ne le saurez probablement pas avant plusieurs semaines. Parfois plusieurs mois. Et quand vous le saurez, il sera trop tard pour limiter les dégâts.</p>
+        <div class="prob-quote">"La question n'est pas de savoir si votre entreprise va être attaquée. C'est de savoir quand — et si vous le saurez à temps."<cite>— Principe fondateur de Valtis</cite></div>
+      </div>
+      <div class="prob-right">
+        <div class="prob-card reveal reveal-delay-1"><span class="prob-card-icon">😴</span><h4>Les intrusions n'ont pas d'horaires</h4><p>La majorité des attaques se déroulent la nuit, le week-end, pendant les vacances. Quand personne ne regarde. Valtis surveille en continu, même quand tout le monde dort.</p></div>
+        <div class="prob-card reveal reveal-delay-2"><span class="prob-card-icon">🔕</span><h4>Un signal faible peut tout changer</h4><p>Une connexion inhabituelle, un fichier modifié à une heure étrange, un transfert suspect — seul, chaque événement semble anodin. Croisés ensemble, ils révèlent une attaque en cours.</p></div>
+        <div class="prob-card reveal reveal-delay-3"><span class="prob-card-icon">⚖️</span><h4>Le RGPD ne fait pas de cadeaux</h4><p>En cas de violation, vous devez notifier la CNIL sous 72h. Sans traçabilité, vous êtes incapable de prouver quoi que ce soit. L'amende s'ajoute au dommage.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="si">
+    <span class="slabel reveal">Notre réponse</span>
+    <h2 class="stitle reveal">Simple à comprendre.<br>Opérationnel en moins de 2 semaines.</h2>
+    <p class="ssub reveal">Nous déployons, nous configurons, nous surveillons. Vous recevez un rapport. On vous appelle si quelque chose ne va pas.</p>
+    <div class="sol-grid">
+      <div class="sol-card reveal"><span class="sol-step">Étape 01</span><span class="sol-icon">🔧</span><h3>On installe. Vous ne touchez à rien.</h3><p>Nous déployons la solution sur vos serveurs existants, sur un VPS cloud ou sur matériel dédié. Agents sur tous vos postes, règles adaptées à votre environnement réel.</p><span class="sol-detail">→ Installation complète, testée et validée</span></div>
+      <div class="sol-card reveal reveal-delay-1"><span class="sol-step">Étape 02</span><span class="sol-icon">👁️</span><h3>On surveille. Vous dirigez votre boîte.</h3><p>Chaque matin, un rapport de sécurité arrive dans votre boîte. Si une alerte sérieuse remonte, nous vous contactons directement avec une analyse claire et les actions à mener.</p><span class="sol-detail">→ Abonnement mensuel, sans surprise</span></div>
+      <div class="sol-card reveal reveal-delay-2"><span class="sol-step">Option</span><span class="sol-icon">🎓</span><h3>On forme vos équipes. Ils comprennent enfin.</h3><p>Vos collaborateurs apprennent à lire les rapports, interpréter une alerte et réagir aux incidents courants. Une session pratique, sans jargon, adaptée à leur niveau.</p><span class="sol-detail">→ Sur site ou à distance, à la carte</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section id="modules">
+  <div class="si">
+    <span class="slabel reveal">Ce qu'on surveille pour vous</span>
+    <h2 class="stitle reveal">Vous choisissez ce dont<br>vous avez besoin. Rien de plus.</h2>
+    <p class="ssub reveal">Chaque module s'active selon votre contexte. Vous démarrez avec le socle, vous ajoutez ce qui correspond à vos risques réels.</p>
+    <div class="mg">
+      <div class="mc reveal"><span class="mi">🌐</span><h4>Trafic réseau</h4><p>Tout ce qui entre et sort est analysé. Connexions suspectes, scans, tentatives d'intrusion.</p><span class="mtag">Réseau</span></div>
+      <div class="mc reveal reveal-delay-1"><span class="mi">🦠</span><h4>Malwares &amp; virus</h4><p>Détection de fichiers malveillants sur vos postes et serveurs. Alertes immédiates, avant propagation.</p><span class="mtag">Endpoint</span></div>
+      <div class="mc reveal reveal-delay-2"><span class="mi">🔎</span><h4>Failles de configuration</h4><p>Vos systèmes audités régulièrement. Les failles identifiées avant que quelqu'un d'autre les trouve.</p><span class="mtag">Audit</span></div>
+      <div class="mc reveal reveal-delay-3"><span class="mi">🍯</span><h4>Détection précoce</h4><p>Un leurre invisible sur votre réseau. Dès qu'un attaquant le touche, vous êtes alerté.</p><span class="mtag">Honeypot</span></div>
+      <div class="mc reveal"><span class="mi">📋</span><h4>Conformité RGPD</h4><p>Traçabilité complète. Vous avez des preuves en cas de contrôle ou d'incident déclarable.</p><span class="mtag">Conformité</span></div>
+      <div class="mc reveal reveal-delay-1"><span class="mi">🗺️</span><h4>Classification des attaques</h4><p>Chaque alerte identifiée selon le référentiel mondial des techniques d'attaque.</p><span class="mtag">Intelligence</span></div>
+      <div class="mc reveal reveal-delay-2"><span class="mi">📁</span><h4>Intégrité des fichiers</h4><p>Toute modification d'un fichier critique est détectée immédiatement.</p><span class="mtag">Intégrité</span></div>
+      <div class="mc reveal reveal-delay-3"><span class="mi">🏢</span><h4>Comptes &amp; accès</h4><p>Connexions inhabituelles, créations de comptes, escalades de privilèges — tout est tracé.</p><span class="mtag">Identité</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI VALTIS -->
+
+<!-- CE QUE VOUS RECEVEZ CHAQUE MATIN -->
+<section id="rapport" style="scroll-margin-top:80px">
+  <div class="si">
+    <span class="slabel reveal">Chaque matin dans votre boîte</span>
+    <h2 class="stitle reveal">Votre rapport de sécurité<br>vous attend avant 8h.</h2>
+    <div class="rapport-grid">
+      <div class="rapport-text reveal">
+        <p class="ssub">Pas besoin de vous connecter, pas besoin de chercher. Chaque nuit, notre système analyse tout. Chaque matin, vous avez un résumé clair, lisible en 2 minutes.</p>
+        <ul class="rapport-list">
+          <li><span>Niveau de risque global</span> — rouge, orange ou vert selon l'activité de la nuit</li>
+          <li><span>Top alertes</span> — les événements importants triés par criticité</li>
+          <li><span>État de conformité</span> — RGPD et PCI-DSS en un coup d'œil</li>
+          <li><span>Tendances</span> — comparaison avec les 7 derniers jours</li>
+          <li><span>Recommandations</span> — actions concrètes si quelque chose nécessite votre attention</li>
+        </ul>
+      </div>
+      <div class="rapport-mock reveal reveal-delay-1">
+        <div class="rm-header">
+          <div class="rm-dots">
+            <div class="rm-dot" style="background:#ff5f57"></div>
+            <div class="rm-dot" style="background:#febc2e"></div>
+            <div class="rm-dot" style="background:#28c840"></div>
+          </div>
+          <span class="rm-title">📧 Rapport Valtis — contact@votre-societe.fr</span>
+        </div>
+        <div class="rm-body">
+          <div class="rm-subject">🛡️ Rapport de sécurité — Mardi 22 juillet 2026</div>
+          <div class="rm-date">Généré à 06:42 · Période : 21/07 22h00 → 22/07 06h00</div>
+          <div class="rm-stat-row">
+            <div class="rm-stat"><div class="rm-stat-num" style="color:#0f9468">●&nbsp;OK</div><div class="rm-stat-label">Niveau global</div></div>
+            <div class="rm-stat"><div class="rm-stat-num">1 247</div><div class="rm-stat-label">Événements</div></div>
+            <div class="rm-stat"><div class="rm-stat-num">3</div><div class="rm-stat-label">Alertes traitées</div></div>
+          </div>
+          <div class="rm-alert ok"><div class="rm-alert-dot" style="background:#0f9468"></div>Aucune intrusion détectée — trafic réseau normal</div>
+          <div class="rm-alert warn"><div class="rm-alert-dot" style="background:var(--cyan)"></div>2 tentatives SSH bloquées — IP externe 185.220.x.x</div>
+          <div class="rm-alert ok"><div class="rm-alert-dot" style="background:#0f9468"></div>Conformité RGPD : 100% des contrôles actifs</div>
+        </div>
+        <div class="rm-footer">Valtis · Rapport automatique · valtis.tech</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CERTIFICATIONS & EXPERTISE -->
+<section id="certifs" style="scroll-margin-top:80px">
+  <div class="si">
+    <span class="slabel reveal">Expertise certifiée</span>
+    <h2 class="stitle reveal">Vous confiez votre sécurité<br>à quelqu'un qui sait.</h2>
+    <p class="ssub reveal">Des certifications reconnues dans le milieu, pas des badges auto-décernés. La preuve que la technologie est maîtrisée avant d'être déployée chez vous.</p>
+    <div class="certifs-grid">
+      <div class="certif-card reveal">
+        <div class="certif-icon" style="background:rgba(0,114,196,0.1)">🌐</div>
+        <div class="certif-issuer">Cisco</div>
+        <div class="certif-name">CCNA — Certified Network Associate</div>
+        <div class="certif-desc">Réseaux IP, routage, switching, sécurité réseau. La base de toute infrastructure surveillée.</div>
+      </div>
+      <div class="certif-card reveal reveal-delay-1">
+        <div class="certif-icon" style="background:rgba(234,67,53,0.1)">🔐</div>
+        <div class="certif-issuer">Google / Coursera</div>
+        <div class="certif-name">Google Cybersecurity Certificate</div>
+        <div class="certif-desc">Détection des menaces, réponse aux incidents, SIEM, outils de sécurité. Certifié Google.</div>
+      </div>
+      <div class="certif-card reveal reveal-delay-2">
+        <div class="certif-icon" style="background:rgba(0,63,136,0.1)">📊</div>
+        <div class="certif-issuer">IBM / Coursera</div>
+        <div class="certif-name">IBM Cybersecurity Analyst</div>
+        <div class="certif-desc">Analyse SOC, threat intelligence, forensique, gestion des incidents. Parcours complet IBM.</div>
+      </div>
+      <div class="certif-card reveal reveal-delay-3">
+        <div class="certif-icon" style="background:rgba(0,172,195,0.1)">🎓</div>
+        <div class="certif-issuer">Éducation Nationale</div>
+        <div class="certif-name">LP ASSR — Administrateur Systèmes, Sécurité & Réseaux</div>
+        <div class="certif-desc">Bac+3 spécialisé administration systèmes, réseaux et sécurité informatique.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reassurance">
+  <div class="si">
+    <span class="slabel reveal">Pourquoi Valtis</span>
+    <h2 class="stitle reveal">On surveille. Vous décidez.<br>Toujours.</h2>
+    <p class="ssub reveal">Notre rôle est clair, notre périmètre est défini, et on ne dépasse jamais l'un ni l'autre.</p>
+    <div class="rg">
+      <div class="rc reveal"><div class="rn">01</div><h4>Votre infrastructure reste la vôtre</h4><p>Nous surveillons, nous analysons, nous alertons. Nous n'intervenons jamais sur vos machines sans votre accord explicite. Vous restez maître de chaque décision. Toujours.</p></div>
+      <div class="rc reveal reveal-delay-1"><div class="rn">02</div><h4>Pas de promesse d'immunité</h4><p>Aucun système ne peut garantir zéro incident. Quiconque vous dit le contraire vous ment. Ce qu'on vous garantit : si quelque chose se passe, vous le saurez — et vous n'affronterez pas ça seul.</p></div>
+      <div class="rc reveal reveal-delay-2"><div class="rn">03</div><h4>Zéro coût de licence logicielle</h4><p>Vous payez notre expertise, notre disponibilité et notre suivi — pas un éditeur logiciel. C'est pour ça que nos tarifs restent accessibles à une PME.</p></div>
+      <div class="rc reveal reveal-delay-3"><div class="rn">04</div><h4>Un interlocuteur, pas un ticket</h4><p>Quand vous avez une question ou qu'une alerte vous interpelle — vous nous écrivez, on vous répond. Pas un formulaire de support, pas une hotline externalisée. Nous.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="scroll-margin-top:80px">
+  <div class="si">
+    <span class="slabel reveal">Tarifs transparents</span>
+    <h2 class="stitle reveal">Pas de surprise.<br>Jamais.</h2>
+    <p class="ssub reveal">Un devis personnalisé est toujours possible — mais voici les fourchettes pour que vous sachiez où vous en êtes avant même de nous contacter.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Socle</div>
+        <div class="pricing-price">
+          <span class="pricing-amount">200€</span>
+          <span class="pricing-period">/mois</span>
+        </div>
+        <div class="pricing-install">+ installation <strong>1 200 – 2 000€</strong> (une fois)</div>
+        <ul class="pricing-features">
+          <li>Jusqu'à 25 agents surveillés</li>
+          <li>Détection réseau Suricata</li>
+          <li>Antivirus ClamAV intégré</li>
+          <li>Conformité RGPD tracée</li>
+          <li>Rapport PDF quotidien</li>
+          <li>Alertes critiques en temps réel</li>
+        </ul>
+        <a href="#accueil" class="pricing-cta">Demander un devis →</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-1">
+        <div class="pricing-badge">Le plus choisi</div>
+        <div class="pricing-name">Complet</div>
+        <div class="pricing-price">
+          <span class="pricing-amount">380€</span>
+          <span class="pricing-period">/mois</span>
+        </div>
+        <div class="pricing-install">+ installation <strong>2 500 – 3 500€</strong> (une fois)</div>
+        <ul class="pricing-features">
+          <li>Jusqu'à 50 agents surveillés</li>
+          <li>Tous les modules actifs (8)</li>
+          <li>Honeypot OpenCanary</li>
+          <li>Audit de configuration Lynis</li>
+          <li>MITRE ATT&amp;CK classifié</li>
+          <li>Enrichissement IA (Ollama)</li>
+          <li>Conformité RGPD + PCI-DSS</li>
+          <li>Dashboard temps réel</li>
+        </ul>
+        <a href="#accueil" class="pricing-cta">Demander un devis →</a>
+      </div>
+    </div>
+    <p class="pricing-note reveal">Engagement 12 mois · Premier mois offert · Parc &gt; 50 agents : tarif sur mesure · Tous les prix sont HT</p>
+  </div>
+</section>
+
+
+<!-- FAQ -->
+<section id="faq" style="scroll-margin-top:80px">
+  <div class="si">
+    <span class="slabel reveal">Questions fréquentes</span>
+    <h2 class="stitle reveal">Vous vous posez<br>probablement ces questions.</h2>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Est-ce que vous intervenez sur nos serveurs ?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>Non, jamais sans votre accord explicite. Notre périmètre contractuel est la détection et l'alerting. Nous installons nos agents et nous surveillons — mais toute action corrective est soumise à votre validation préalable. Vous restez maître de votre infrastructure à tout moment.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Que se passe-t-il si je résilie ?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>L'engagement est de 12 mois. Passé cette période, vous pouvez résilier avec un préavis de 30 jours. À la résiliation, nous vous fournissons une procédure de désinstallation propre des agents. Vos données restent les vôtres — nous n'en conservons aucune après la fin du contrat.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Quel est votre délai de réponse en cas d'alerte critique ?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>Pour les alertes de niveau critique, nous vous contactons dans les 2 heures, 7j/7. Pour les alertes importantes, vous les recevez en temps réel par email avec une analyse claire. Le rapport quotidien couvre tout le reste. Vous n'êtes jamais seul face à un incident.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Est-ce compatible avec notre infrastructure existante ?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>Oui. Notre stack supporte Windows Server, Linux, Azure, Microsoft 365, pfSense et la plupart des environnements PME standard. L'installation se fait à distance via VPN, sans interruption de service. Un audit préalable gratuit permet de vérifier la compatibilité avant tout engagement.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Nous avons déjà un administrateur système — est-ce utile ?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>C'est même idéal. Valtis ne remplace pas votre admin sys, il lui donne des yeux là où il ne peut pas regarder : 24h/24, 7j/7, en croisant des milliers d'événements en temps réel. Votre admin sys gère l'infra, Valtis surveille les menaces. Les deux sont complémentaires.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Nos données passent-elles par vos serveurs ?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>Non. La solution est déployée directement sur votre infrastructure — sur vos serveurs, votre VPS ou un matériel dédié chez vous. Vos logs et événements de sécurité ne quittent jamais votre périmètre. Nous avons uniquement accès aux alertes générées, pas aux données brutes.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA BANDE -->
+<div class="cta-band">
+  <h3>Votre réseau est peut-être déjà compromis.</h3>
+  <p>207 jours en moyenne avant de le savoir. Pas chez nos clients.</p>
+  <a href="#accueil">Protéger mon réseau maintenant →</a>
+</div>
+
+</main>
+
+<footer>
+  <div class="fi">
+    <img src="/valtis-logo.png" alt="Logo Valtis - Cybersécurité managée pour PME" style="height:30px;opacity:.55"/>
+    <div class="fc">© 2026 Valtis — valtis.tech — SIREN : 928 174 432</div>
+    <ul class="fl">
+      <li><a href="#probleme">Le problème</a></li>
+      <li><a href="#solution">Notre réponse</a></li>
+      <li><a href="#modules">Modules</a></li>
+      <li><a href="/wazuh/">Notre SIEM</a></li>
+      <li><a href="/rdv/">Prendre RDV</a></li>
+      <li><a href="#accueil">Contact</a></li>
+      <li><a href="/mentions-legales/">Mentions légales</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+// PARTICLES
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  const section = document.getElementById('accueil');
+  let particles = [];
+  let w, h;
+
+  function resize() {
+    w = canvas.width = section.offsetWidth;
+    h = canvas.height = section.offsetHeight;
+    particles = [];
+    for (let i = 0; i < 180; i++) particles.push(new Particle());
+  }
+
+  function Particle() {
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.vx = (Math.random() - 0.5) * 0.45;
+    this.vy = (Math.random() - 0.5) * 0.45;
+    this.r = Math.random() * 2.2 + 0.8;
+    this.alpha = Math.random() * 0.5 + 0.25;
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0,212,240,' + p.alpha + ')';
+      ctx.fill();
+    }
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 140) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = 'rgba(0,172,195,' + (0.28 * (1 - d / 140)) + ')';
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// NAV SCROLL
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// SMOOTH SCROLL OFFSET FOR ANCHORS
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    const offset = 80;
+    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  });
+});
+
+// COUNTERS ANIMATION
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.target);
+      let current = 0;
+      const duration = 1200;
+      const step = target / (duration / 16);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.round(current);
+        if (current >= target) clearInterval(timer);
+      }, 16);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+// FORM SUBMIT — via Netlify Function (clé Brevo côté serveur uniquement)
+document.querySelectorAll('form').forEach(form => {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    if (!btn) return;
+    const originalText = btn.textContent;
+    btn.textContent = 'Envoi en cours...';
+    btn.disabled = true;
+
+    const payload = {
+      nom:         this.querySelector('[name="nom"]')?.value?.trim()         || '',
+      email:       this.querySelector('[name="email"]')?.value?.trim()       || '',
+      telephone:   this.querySelector('[name="telephone"]')?.value?.trim()   || '',
+      taille_infra:this.querySelector('[name="taille_infra"]')?.value        || '',
+      message:     this.querySelector('[name="message"]')?.value?.trim()     || '',
+      honeypot:    this.querySelector('[name="honeypot"]')?.value            || ''
+    };
+
+    try {
+      const res = await fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Réponse serveur KO');
+
+      btn.textContent = '✓ Demande envoyée !';
+      btn.style.background = '#0f9468';
+      setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; form.reset(); }, 3500);
+
+    } catch(err) {
+      btn.textContent = 'Erreur — réessayez';
+      btn.style.background = '#ef4444';
+      setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+    }
+  });
+});
+
+// BURGER MENU
+function toggleMobileMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+// FAQ accordion
+function toggleFaq(btn) {
+  var item = btn.parentElement;
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(el){ el.classList.remove('open'); });
+  if (!wasOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
